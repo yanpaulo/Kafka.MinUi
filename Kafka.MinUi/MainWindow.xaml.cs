@@ -56,6 +56,11 @@ namespace Kafka.MinUi
             await _viewModel.CreateTopicAsync();
         }
 
+        private void ListenTopicButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.ListenTopic();
+        }
+
         private async void SendButton_Click(object sender, RoutedEventArgs e)
         {
             await _viewModel.SendAsync();
@@ -291,6 +296,16 @@ namespace Kafka.MinUi
             }
         }
 
+        public void ListenTopic()
+        {
+            if (!ValidateTopicName())
+            {
+                SendAlert("A valid topic name must be specified");
+                return;
+            }
+            LaunchTopicWindow(TopicName);
+        }
+
         public async Task SendAsync()
         {
             try
@@ -349,6 +364,23 @@ namespace Kafka.MinUi
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
+                WorkingDirectory = _rootDir
+            };
+
+            return Process.Start(info);
+        }
+
+        private Process LaunchTopicWindow(string topicName)
+        {
+            var scriptPath = Path.Combine(_rootDir, "listen-topic.bat");
+            var args = topicName;
+
+            var info = new ProcessStartInfo("cmd.exe", $"/k {scriptPath} {args}")
+            {
+                CreateNoWindow = false,
+                UseShellExecute = true,
+                RedirectStandardOutput = false,
+                RedirectStandardError = false,
                 WorkingDirectory = _rootDir
             };
 

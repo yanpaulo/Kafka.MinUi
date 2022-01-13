@@ -47,7 +47,10 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBox Grid.Column="0" Text="{Binding TopicName}"></TextBox>
-                <Button Grid.Column="1" Click="CreateTopicButton_Click" IsEnabled="{Binding IsCreateTopicButtonEnabled}">_Create</Button>
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button Click="CreateTopicButton_Click" IsEnabled="{Binding IsCreateTopicButtonEnabled}">_Create</Button>
+                    <Button Click="ListenTopicButton_Click" IsEnabled="{Binding IsCreateTopicButtonEnabled}">_Listen</Button>
+                </StackPanel>
             </Grid>
         </GroupBox>
         <TabControl Grid.Row="2">
